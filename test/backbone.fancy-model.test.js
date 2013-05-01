@@ -74,14 +74,58 @@ describe("Backbone fancy model", function(){
       expect(model.get('foo')).to.eq(3);
     });
 
-    it("changes when dependancy changes", function(){
+    it("changes when dependency changes", function(){
       model.set('bar', 10);
       expect(model.get('foo')).to.eq(12);
     });
 
-    it("changes when other dependancy changes", function(){
+    it("changes when other dependency changes", function(){
       model.set({bin: 10});
       expect(model.get('foo')).to.eq(11);
+    });
+  });
+
+  describe("relations", function() {
+    describe("simple setup", function() {
+      var Related = Backbone.Model.extend({});
+      var Model = Backbone.FancyModel.extend({
+        relations: {
+          "foo" : Related
+        }
+      });
+
+
+      it("creates a model called foo", function() {
+        var model = new Model({ foo: { attr: 10 } });
+        expect(model.foo.get('attr')).to.eq(10)
+      });
+
+      it("removes foo attrs from model attrs", function() {
+        var model = new Model({ foo: { attr: 10 } });
+        expect(model.get('foo')).to.eq(undefined);
+      });
+
+      it("serializes model attrs with foo attrs", function() {
+        var model = new Model({ foo: { attr: 10 } });
+        expect(model.toJSON().foo.attr).to.eq(10);
+      });
+    });
+
+    describe("with different name", function() {
+      var Related = Backbone.Model.extend({});
+      var Model = Backbone.FancyModel.extend({
+        relations: {
+          "foo" : {
+            attribute: 'bar',
+            isA: Related
+          }
+        }
+      });
+
+      it("creates a model called foo", function(){
+        var model = new Model({ bar: { attr: 10 } });
+        expect(model.foo.get('attr')).to.eq(10)
+      })
     });
   });
 });
