@@ -76,14 +76,14 @@
       cache.push(rel);
       model.unset(rel.attribute);
 
-      model[rel.name] = new rel.implementation(attrs);
+      model.set(rel.name, new rel.implementation(attrs));
     });
   }
   
   function serializeRelations(model){
     var obj = {};
     _.each(model.__relations, function(rel){
-      obj[rel.attribute] = model[rel.name].toJSON();
+      obj[rel.attribute] = model.get(rel.name).toJSON();
     });
     return obj;
   }

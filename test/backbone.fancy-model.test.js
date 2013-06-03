@@ -94,15 +94,9 @@ describe("Backbone fancy model", function(){
         }
       });
 
-
       it("creates a model called foo", function() {
         var model = new Model({ foo: { attr: 10 } });
-        expect(model.foo.get('attr')).to.eq(10)
-      });
-
-      it("removes foo attrs from model attrs", function() {
-        var model = new Model({ foo: { attr: 10 } });
-        expect(model.get('foo')).to.eq(undefined);
+        expect(model.get('foo').get('attr')).to.eq(10)
       });
 
       it("serializes model attrs with foo attrs", function() {
@@ -124,7 +118,7 @@ describe("Backbone fancy model", function(){
 
       it("creates a model called foo", function(){
         var model = new Model({ bar: { attr: 10 } });
-        expect(model.foo.get('attr')).to.eq(10)
+        expect(model.get('foo').get('attr')).to.eq(10)
       })
     });
   });
